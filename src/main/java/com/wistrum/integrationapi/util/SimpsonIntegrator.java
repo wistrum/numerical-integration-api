@@ -16,10 +16,6 @@ public class SimpsonIntegrator {
 		double lowerBound = request.getLowerBound();
 		int intervals = request.getIntervals();
 		
-		if(lowerBound > upperBound) {
-			throw new IllegalArgumentException(
-					"Lower Bound must be less than or equal to Upper Bound.");
-		}
 		if(intervals % 2 != 0) {
 			throw new IllegalArgumentException("Intervals must be even.");
 		}

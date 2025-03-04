@@ -15,10 +15,6 @@ public class TrapezoidalIntegrator {
 		double upperBound = request.getUpperBound();
 		int intervals = request.getIntervals();
 		
-		if(lowerBound > upperBound) {
-			throw new IllegalArgumentException(
-					"Lower Bound must be less than or equal to Upper Bound.");
-		}
 		if(intervals < 0 || intervals > 1000000) {
 			throw new IllegalArgumentException(
 					"Intervals must be at least 1 and "

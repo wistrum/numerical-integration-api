@@ -2,6 +2,7 @@ package com.wistrum.integrationapi.util;
 
 import com.wistrum.integrationapi.model.IntegrationMethod;
 import com.wistrum.integrationapi.model.IntegrationRequest;
+import org.mariuszgromada.math.mxparser.*;
 
 public class NumericalIntegrator {
 	
@@ -9,7 +10,15 @@ public class NumericalIntegrator {
 		if(request == null) {
 			throw new IllegalArgumentException("Request cannot be null");
 		}
-		
+		if (request.getLowerBound() > request.getUpperBound()) {
+            throw new IllegalArgumentException(
+            		"Lower bound must be less than or equal to the upper bound.");
+        }
+		Function f = new Function("f(x) = " + request.getFunction());
+		if(!f.checkSyntax()) {
+			throw new IllegalArgumentException(
+					"Invalid function syntax" + f.getErrorMessage());
+		}
 		IntegrationMethod integrationMethod = request.getIntegrationMethod();
 		
 		switch(integrationMethod) {
