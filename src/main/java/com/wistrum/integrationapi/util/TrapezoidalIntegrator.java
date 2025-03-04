@@ -14,37 +14,30 @@ public class TrapezoidalIntegrator {
 		double lowerBound = request.getLowerBound();
 		double upperBound = request.getUpperBound();
 		int intervals = request.getIntervals();
-		double integral;
 		
-		if(lowerBound >= upperBound) {
+		if(lowerBound > upperBound) {
 			throw new IllegalArgumentException(
-					"Lower Bound must be less than Upper Bound.");
+					"Lower Bound must be less than or equal to Upper Bound.");
 		}
-		if(intervals <= 0 || intervals > 1000000) {
+		if(intervals < 0 || intervals > 1000000) {
 			throw new IllegalArgumentException(
-					"Number of Intervals msut be greater than 0 and "
-					+ "less than 1.0e6");
+					"Intervals must be at least 1 and "
+					+ "at most 1.0e6");
 		}
 		
 		double increment = (upperBound - lowerBound) / intervals;
-		Argument x = new Argument("x");
-		Expression expression = new Expression(function, x);
+		Function f = new Function("f(x) = "+ function);
 		
-		x.setArgumentValue(lowerBound);
-		double fa = expression.calculate();
-		x.setArgumentValue(upperBound);
-		double fb = expression.calculate();
-		
+		double fa = f.calculate(lowerBound);
+		double fb = f.calculate(upperBound);
 		double sum = 0;
 		double xi = lowerBound + increment;
+		
 		for(int i = 1; i < intervals; i++) {
-			x.setArgumentValue(xi);
-			sum += expression.calculate();
+			sum += f.calculate(xi);
 			xi += increment;
 		}
 		
-		integral = 0.5*increment*(fa + fb + sum);
-		
-		return integral;
+		return 0.5*increment*(fa + fb + sum);
 	}
 }

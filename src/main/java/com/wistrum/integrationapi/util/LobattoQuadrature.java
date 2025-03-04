@@ -16,6 +16,10 @@ public class LobattoQuadrature {
         this.upperBound = request.getUpperBound();
         this.intervals = request.getIntervals();
         this.function = parseFunction(request.getFunction());
+        if (this.lowerBound > this.upperBound) {
+            throw new IllegalArgumentException(
+            		"Lower bound must be less than or equal to the upper bound.");
+        }
     }
 
     private Function<Double, Double> parseFunction(String functionStr) {
@@ -71,7 +75,11 @@ public class LobattoQuadrature {
 
     public double integrate() {
         int n = intervals;
-        if (n < 2) throw new IllegalArgumentException("Intervals must be at least 2");
+        if(n <= 2 || n > 100000) {
+			throw new IllegalArgumentException(
+					"Intervals must be at least 2 and "
+					+ "at most 1.0e5");
+		}
 
         double[] nodes = findLobattoNodes(n);
         double[] weights = computeWeights(n, nodes);
