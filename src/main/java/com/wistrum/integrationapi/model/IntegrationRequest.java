@@ -12,9 +12,7 @@ import jakarta.persistence.Enumerated;
 public class IntegrationRequest {
 	@NotBlank
 	private String function;
-	@Min(1)
 	private double lowerBound;
-	@Min(1)
 	private double upperBound;
 	@Enumerated(EnumType.STRING)
 	@NotNull
@@ -41,7 +39,6 @@ public class IntegrationRequest {
 	}
 	
 	public void setAngularMeasure(AngularMeasure angularMeasure) { 
-		
 		this.angularMeasure = angularMeasure;}
 	public AngularMeasure getAngularMeasure () {
 		return angularMeasure;
