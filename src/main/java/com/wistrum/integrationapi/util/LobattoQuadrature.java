@@ -80,7 +80,9 @@ public class LobattoQuadrature {
                 iterations++;
 
                 if (iterations >= 100) {
-                    throw new ArithmeticException("Newton’s method failed to converge for Lobatto node at i=" + i);
+                    throw new ArithmeticException(
+                    		"Newton’s method failed to converge"
+                    		+ " for Lobatto node at i=" + i);
                 }
 
             } while (Math.abs(x - xPrev) > 1e-9);
