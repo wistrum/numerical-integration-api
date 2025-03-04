@@ -4,13 +4,12 @@ import com.wistrum.integrationapi.model.IntegrationMethod;
 import com.wistrum.integrationapi.model.IntegrationRequest;
 
 public class NumericalIntegrator {
-	IntegrationRequest request;
 	
-	public NumericalIntegrator(IntegrationRequest request) {
-		this.request = request;
-	}
-	
-	public double integrate() {
+	public double integrate(IntegrationRequest request) {
+		if(request == null) {
+			throw new IllegalArgumentException("Request cannot be null");
+		}
+		
 		IntegrationMethod integrationMethod = request.getIntegrationMethod();
 		
 		switch(integrationMethod) {

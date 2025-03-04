@@ -25,19 +25,19 @@ public class TrapezoidalIntegrator {
 					+ "at most 1.0e6");
 		}
 		
-		double increment = (upperBound - lowerBound) / intervals;
+		double stepSize = (upperBound - lowerBound) / intervals;
 		Function f = new Function("f(x) = "+ function);
 		
 		double fa = f.calculate(lowerBound);
 		double fb = f.calculate(upperBound);
 		double sum = 0;
-		double xi = lowerBound + increment;
+		double xi = lowerBound + stepSize;
 		
 		for(int i = 1; i < intervals; i++) {
 			sum += f.calculate(xi);
-			xi += increment;
+			xi += stepSize;
 		}
 		
-		return 0.5*increment*(fa + fb + sum);
+		return 0.5*stepSize*(fa + fb + sum);
 	}
 }
