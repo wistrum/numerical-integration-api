@@ -63,6 +63,8 @@ public class NumericalIntegrator {
                 return new MidpointIntegrator(request).integrate();
             case LOBATTO_QUADRATURE:
                 return new LobattoQuadrature(request).integrate();
+            case GAUSS_LEGENDRE_QUADRATURE:
+            	return new GaussLegendreQuadrature(request).integrate();
             default:
                 throw new IllegalArgumentException("Unknown or unimplemented integration method");
         }
