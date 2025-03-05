@@ -2,6 +2,7 @@ package com.wistrum.integrationapi.util;
 
 import com.wistrum.integrationapi.model.IntegrationRequest;
 import org.mariuszgromada.math.mxparser.Function;
+
 import java.util.Arrays;
 
 public class GaussLegendreQuadrature {
@@ -15,41 +16,32 @@ public class GaussLegendreQuadrature {
 
     public GaussLegendreQuadrature(IntegrationRequest request) {
         this.f = new Function("f(x) = " + request.getFunction());
-        if (!f.checkSyntax()) {
-            throw new IllegalArgumentException("Invalid function syntax: " + request.getFunction());
-        }
         this.lowerBound = request.getLowerBound();
         this.upperBound = request.getUpperBound();
         this.intervals = request.getIntervals();
     }
 
     public double integrate() {
-        if (intervals < 1) {
-            throw new IllegalArgumentException(
-            		"Gauss-Legendre quadrature requires at least one node.");
-        }
-        
         double[] nodes = findLegendreNodes(intervals);
         double[] weights = computeWeights(nodes);
         
         double integral = 0.0;
+        double scale = (upperBound - lowerBound) / 2.0;
+        double shift = (upperBound + lowerBound) / 2.0;
+        
         for (int i = 0; i < intervals; i++) {
-            double x_mapped = (upperBound - lowerBound) / 2 * nodes[i] + (lowerBound + upperBound) / 2;
-            double fVal = f.calculate(x_mapped);
-            if (Double.isNaN(fVal) || Double.isInfinite(fVal)) {
-                throw new ArithmeticException("Function evaluation failed at x=" + x_mapped);
-            }
-            integral += weights[i] * fVal;
+            double x_mapped = scale * nodes[i] + shift;
+            integral += weights[i] * f.calculate(x_mapped);
         }
-        return (upperBound - lowerBound) / 2 * integral;
+        return scale * integral;
     }
 
     private static double[] findLegendreNodes(int n) {
         double[] nodes = new double[n];
         
         for (int i = 0; i < n; i++) {
-            double x = Math.cos(Math.PI * (i + 0.75) / (n + 0.5));
-            
+            double x = Math.cos(Math.PI * (i + 0.75) / (n + 0.5)); // Good initial estimate
+
             for (int iter = 0; iter < MAX_ITERATIONS; iter++) {
                 double p = legendrePolynomial(n, x);
                 double dp = legendreDerivative(n, x);
@@ -57,8 +49,8 @@ public class GaussLegendreQuadrature {
                 if (Math.abs(dp) < EPSILON) break;
                 
                 double dx = p / dp;
-                if (Math.abs(dx) < EPSILON) break;
                 x -= dx;
+                if (Math.abs(dx) < EPSILON) break;
             }
             nodes[i] = x;
         }
@@ -72,15 +64,12 @@ public class GaussLegendreQuadrature {
         for (int i = 0; i < n; i++) {
             double x = nodes[i];
             double p_prime = legendreDerivative(n, x);
-            if (Math.abs(p_prime) < EPSILON) {
-                throw new ArithmeticException("Zero derivative encountered in weight computation");
-            }
             weights[i] = 2.0 / ((1 - x * x) * p_prime * p_prime);
         }
         return weights;
     }
 
-    private static double legendrePolynomial(int n, double x) {
+    public static double legendrePolynomial(int n, double x) {
         if (n == 0) return 1.0;
         if (n == 1) return x;
         double p0 = 1.0, p1 = x, p2;
@@ -93,6 +82,6 @@ public class GaussLegendreQuadrature {
     }
 
     private static double legendreDerivative(int n, double x) {
-        return n * (x * legendrePolynomial(n, x) - legendrePolynomial(n - 1, x)) / (x * x - 1 + EPSILON);
+        return n * (x * legendrePolynomial(n, x) - legendrePolynomial(n - 1, x)) / (x * x - 1);
     }
 }
