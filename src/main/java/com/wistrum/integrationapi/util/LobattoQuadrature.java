@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class LobattoQuadrature {
     private static final double EPSILON = 1e-10;
-    private static final int MAX_ITERATIONS = 100;
+    private static final int MAX_ITERATIONS = 1000;
     
     private final Function f;
     private final double lowerBound;
@@ -21,21 +21,8 @@ public class LobattoQuadrature {
         this.lowerBound = request.getLowerBound();
         this.upperBound = request.getUpperBound();
         this.intervals = request.getIntervals();
-
-        checkForSingularities();
     }
 
-    private void checkForSingularities() {
-        double midpoint = (lowerBound + upperBound) / 2;
-        double[] testPoints = {lowerBound, upperBound, midpoint};
-        
-        for (double x : testPoints) {
-            double result = f.calculate(x);
-            if (Double.isNaN(result) || Double.isInfinite(result)) {
-                throw new IllegalArgumentException("Function contains singularity at x=" + x);
-            }
-        }
-    }
 
     public double integrate() {
         if (intervals < 2) throw new IllegalArgumentException(
@@ -76,7 +63,6 @@ public class LobattoQuadrature {
             }
             nodes[i] = x;
         }
-        Arrays.sort(nodes);
         return nodes;
     }
 

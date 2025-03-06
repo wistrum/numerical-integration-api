@@ -16,21 +16,21 @@ class GaussLegendreQuadratureTest {
     @BeforeEach
     void setUp() {
         request = new IntegrationRequest();
-        request.setFunction("x^2");
+        request.setFunction("e^(x^2)");
         request.setLowerBound(0);
         request.setUpperBound(1);
         request.setAngularMeasure(AngularMeasure.RADIANS);
         request.setMethod(IntegrationMethod.GAUSS_LEGENDRE_QUADRATURE);
-        request.setIntervals(3);
+        request.setIntervals(5000);
         numericalIntegrator = new NumericalIntegrator();
     }
 
     @Test
     void testValidIntegration() throws Exception {
         double result = numericalIntegrator.integrate(request);
-        assertEquals(1.0 / 3.0, result, 1e-5, "Integration of x^2 from 0 to 1 should be approximately 1/3");
+        assertEquals(1.4626, result, 1e-5, "Integration of x^2 from 0 to 1 should be approximately 1/3");
     }
-
+ 
     @Test
     void testFunctionSyntaxValidation() {
         request.setFunction("invalid_function(");

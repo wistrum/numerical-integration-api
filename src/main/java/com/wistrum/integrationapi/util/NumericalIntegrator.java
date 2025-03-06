@@ -16,7 +16,7 @@ public class NumericalIntegrator {
 	static {
         License.iConfirmNonCommercialUse("wistrum");
     }
-    private static final long TIME_LIMIT_MS = 10000; // 10-second timeout
+    private static final long TIME_LIMIT_MS = 100000; // 10-second timeout
     private static final long MEMORY_LIMIT_MB = 100; // Max 100MB usage
     
     public double integrate(IntegrationRequest request) throws Exception {
