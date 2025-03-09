@@ -13,7 +13,6 @@ import org.mariuszgromada.math.mxparser.Function;
 import org.mariuszgromada.math.mxparser.License;
 import org.matheclipse.core.eval.ExprEvaluator;
 import org.matheclipse.core.interfaces.IExpr;
-import org.matheclipse.core.interfaces.INum;
 import org.matheclipse.core.expression.AST;
 
 

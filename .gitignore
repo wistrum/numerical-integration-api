@@ -4,6 +4,12 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignore compiled Java binaries
+*.class
+*.jar
+*.war
+*.ear
+
 ### STS ###
 .apt_generated
 .classpath
@@ -31,3 +37,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Logs and temp files
+logs/
+*.log
+*.tmp
+hs_err_pid*
+
+# Application properties (sensitive)
+src/main/resources/application.properties
+src/main/resources/application.yml
+src/main/resources/application-dev.properties
+src/main/resources/application-prod.properties
+.env
