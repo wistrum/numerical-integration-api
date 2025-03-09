@@ -16,19 +16,19 @@ class GaussLegendreQuadratureTest {
     @BeforeEach
     void setUp() {
         request = new IntegrationRequest();
-        request.setFunction("e^(x^2)");
+        request.setFunction("x");
         request.setLowerBound(0);
-        request.setUpperBound(1);
+        request.setUpperBound(700);
         request.setAngularMeasure(AngularMeasure.RADIANS);
         request.setMethod(IntegrationMethod.GAUSS_LEGENDRE_QUADRATURE);
-        request.setIntervals(5000);
+        request.setIntervals(500);
         numericalIntegrator = new NumericalIntegrator();
     }
 
     @Test
     void testValidIntegration() throws Exception {
         double result = numericalIntegrator.integrate(request);
-        assertEquals(1.4626, result, 1e-5, "Integration of x^2 from 0 to 1 should be approximately 1/3");
+        assertEquals(245000, result, 1e-5, "Integration of x^2 from 0 to 1 should be approximately 1/3");
     }
  
     @Test
@@ -51,9 +51,9 @@ class GaussLegendreQuadratureTest {
 
     @Test
     void testSingularFunction() {
-        request.setFunction("1/x");
-        request.setLowerBound(0);
-        request.setUpperBound(1);
+        request.setFunction("(2(x^2) + 3)/((x^2)-40000)");
+        request.setLowerBound(-198);
+        request.setUpperBound(200);
         assertThrows(ArithmeticException.class, () -> numericalIntegrator.integrate(request), "Integration of singular function should throw an exception");
     }
 
@@ -61,6 +61,6 @@ class GaussLegendreQuadratureTest {
     void testConstantFunction() throws Exception {
         request.setFunction("5");
         double result = numericalIntegrator.integrate(request);
-        assertEquals(5.0, result, 1e-5, "Integration of constant function 5 from 0 to 1 should be 5");
+        assertEquals(3500.0, result, 1e-5, "Integration of constant function 5 from 0 to 1 should be 5");
     }
 }

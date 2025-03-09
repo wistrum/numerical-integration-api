@@ -2,8 +2,6 @@ package com.wistrum.integrationapi.util;
 
 import com.wistrum.integrationapi.model.IntegrationMethod;
 import com.wistrum.integrationapi.model.IntegrationRequest;
-import org.mariuszgromada.math.mxparser.Function;
-import org.mariuszgromada.math.mxparser.License;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +9,19 @@ import java.util.concurrent.*;
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
 import java.lang.management.MemoryUsage;
+import org.mariuszgromada.math.mxparser.Function;
+import org.mariuszgromada.math.mxparser.License;
+import org.matheclipse.core.eval.ExprEvaluator;
+import org.matheclipse.core.interfaces.IExpr;
+import org.matheclipse.core.interfaces.INum;
+import org.matheclipse.core.expression.AST;
+
 
 public class NumericalIntegrator {
 	static {
         License.iConfirmNonCommercialUse("wistrum");
     }
-    private static final long TIME_LIMIT_MS = 100000; // 10-second timeout
+    private static final long TIME_LIMIT_MS = 20000; // 20-second timeout
     private static final long MEMORY_LIMIT_MB = 100; // Max 100MB usage
     
     public double integrate(IntegrationRequest request) throws Exception {
@@ -66,7 +71,6 @@ public class NumericalIntegrator {
 
     private double executeIntegration(IntegrationRequest request) {
         IntegrationMethod integrationMethod = request.getIntegrationMethod();
-        System.out.println(request.getIntegrationMethod().toString());
         switch (integrationMethod) {
             case TRAPEZOIDAL:
                 return new TrapezoidalIntegrator(request).integrate();
@@ -96,13 +100,11 @@ public class NumericalIntegrator {
     private void checkForDivisionByZero(Function f, double lowerBound, double upperBound) {
         String functionStr = f.getFunctionExpressionString();
         
-        // Try extracting denominator (assumes format like "p(x)/q(x)")
+        // Try extracting denominator
         String denominator = extractDenominator(functionStr);
         if (denominator == null) return; // No denominator, no division by zero risk
-
-        // Solve q(x) = 0
-        Function q = new Function("q(x) = " + denominator);
-        for (double x : findRoots(q, lowerBound, upperBound)) {
+        //Check if denominator evaluates to 0 anywhere within bounds
+        for (double x : findRoots(denominator)) {
             if (x >= lowerBound && x <= upperBound) {
                 throw new ArithmeticException("Singularity detected at x = " + x);
             }
@@ -111,27 +113,31 @@ public class NumericalIntegrator {
 
     // Extract denominator from "p(x)/q(x)" format
     private String extractDenominator(String function) {
-        int slashIndex = function.indexOf('/');
+    	ExprEvaluator evaluator = new ExprEvaluator();
+        IExpr result = evaluator.evaluate("Simplify(" + function + ")");//get p(x)/q(x) format
+        String simplified = result.toScript();
+        int slashIndex = simplified.indexOf('/');
         if (slashIndex == -1) return null; // No division present
         
-        return function.substring(slashIndex + 1).trim(); // Assume simple p(x)/q(x) structure
+        return simplified.substring(slashIndex + 1).trim();
     }
 
-    // Solve q(x) = 0 numerically (brute-force approach, but could use symbolic solving)
-    private List<Double> findRoots(Function q, double lower, double upper) {
+    // Solve denominator = 0
+    private List<Double> findRoots(String denominator) {
         List<Double> roots = new ArrayList<>();
-        double stepSize = (upper - lower) / 10000.0; // Fine-grained search
-        double prevVal = q.calculate(lower);
-
-        for (double x = lower + stepSize; x <= upper; x += stepSize) {
-            double currVal = q.calculate(x);
-            if (Double.isNaN(currVal) || Double.isInfinite(currVal)) continue;
-
-            if (Math.signum(prevVal) != Math.signum(currVal)) { 
-                // A root exists between (x - stepSize) and x
-                roots.add(x - stepSize / 2.0); // Approximate root location
+        ExprEvaluator evaluator = new ExprEvaluator(false, (short) 100);
+        String equation = "Solve(" + denominator + "== 0, x)";
+        IExpr result = evaluator.evaluate(equation);
+        if (result.isAST()) {  // Ensure result is a list of solutions
+            AST list = (AST) result;
+            for (IExpr solution : list) {
+                if (solution.isAST() && solution.size() == 2) {
+                    IExpr value = solution.getAt(1);
+                    if (value.last().isNumber()) {
+                        roots.add(value.last().toDoubleDefault());
+                    }
+                }
             }
-            prevVal = currVal;
         }
         return roots;
     }
