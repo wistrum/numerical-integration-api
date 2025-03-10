@@ -48,14 +48,12 @@ public class LobattoQuadrature {
         double[] nodes = new double[n];
         nodes[0] = -1.0;
         nodes[n - 1] = 1.0;
-
-        int m = (n - 2); // Inner nodes count
-
-        for (int i = 1; i <= m; i++) {
-            double x = Math.cos(Math.PI * i / (m + 1)); // Better initial guess
+        
+        for (int i = 1; i < n - 1; i++) {
+            double x = Math.cos(Math.PI * (i + 0.5) / (n - 1));
             for (int iter = 0; iter < MAX_ITERATIONS; iter++) {
-                double p = legendreDerivative(n - 1, x);
-                double dp = (n - 1) * (legendrePolynomial(n - 1, x) - x * p) / (1 - x * x);
+                double p = legendrePolynomial(n - 1, x);
+                double dp = legendreDerivative(n - 1, x);
                 
                 if (Math.abs(dp) < EPSILON) break;
                 
