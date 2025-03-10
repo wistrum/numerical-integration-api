@@ -19,7 +19,7 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         	config.setAllowedOrigins(List.of("https://rococo-biscotti-18adad.netlify.app/"));
-        config.setAllowedMethods(List.of("POST", "OPTIONS"));
+        config.setAllowedMethods(List.of("POST", "OPTIONS", "GET"));
         config.setAllowedHeaders(List.of("Content-Type", "Authorization"));
         config.setAllowCredentials(true);
 
