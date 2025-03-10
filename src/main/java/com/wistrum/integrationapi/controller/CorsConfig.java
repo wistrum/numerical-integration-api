@@ -14,7 +14,7 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
         
-        config.addAllowedOrigin("https://rococo-biscotti-18adad.netlify.app");
+        config.addAllowedOrigin("https://charming-alfajores-63db12.netlify.app");
         
         config.addAllowedOrigin("http://localhost:3000");
         config.addAllowedOrigin("http://localhost:8080");
