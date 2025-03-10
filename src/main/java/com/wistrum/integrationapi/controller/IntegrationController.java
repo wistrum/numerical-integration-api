@@ -18,6 +18,7 @@ import io.github.bucket4j.*;
 
 @RestController
 @RequestMapping("/api/integrate")
+@CrossOrigin(origins = "*", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS})
 public class IntegrationController {
 	private NumericalIntegrator numericalIntegrator = new NumericalIntegrator();
 	private final ConcurrentMap<String, Bucket> buckets = new ConcurrentHashMap<>();
