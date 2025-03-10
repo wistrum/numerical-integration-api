@@ -16,19 +16,19 @@ class GaussLegendreQuadratureTest {
     @BeforeEach
     void setUp() {
         request = new IntegrationRequest();
-        request.setFunction("x");
+        request.setFunction("x^2");
         request.setLowerBound(0);
-        request.setUpperBound(700);
+        request.setUpperBound(2);
         request.setAngularMeasure(AngularMeasure.RADIANS);
         request.setMethod(IntegrationMethod.GAUSS_LEGENDRE_QUADRATURE);
-        request.setIntervals(500);
+        request.setIntervals(5000);
         numericalIntegrator = new NumericalIntegrator();
     }
 
     @Test
     void testValidIntegration() throws Exception {
         double result = numericalIntegrator.integrate(request);
-        assertEquals(245000, result, 1e-5, "Integration of x^2 from 0 to 1 should be approximately 1/3");
+        assertEquals(2.66666, result, 1e-5, "Integration of x^2 from 0 to 1 should be approximately 1/3");
     }
  
     @Test
@@ -61,6 +61,6 @@ class GaussLegendreQuadratureTest {
     void testConstantFunction() throws Exception {
         request.setFunction("5");
         double result = numericalIntegrator.integrate(request);
-        assertEquals(3500.0, result, 1e-5, "Integration of constant function 5 from 0 to 1 should be 5");
+        assertEquals(10.0, result, 1e-5, "Integration of constant function 5 from 0 to 1 should be 5");
     }
 }
