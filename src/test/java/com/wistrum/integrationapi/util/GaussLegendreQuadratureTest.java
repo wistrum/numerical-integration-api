@@ -20,7 +20,7 @@ class GaussLegendreQuadratureTest {
         request.setLowerBound(0);
         request.setUpperBound(2);
         request.setAngularMeasure(AngularMeasure.RADIANS);
-        request.setMethod(IntegrationMethod.LOBATTO_QUADRATURE);
+        request.setMethod(IntegrationMethod.SIMPSON);
         request.setIntervals(1000);
         numericalIntegrator = new NumericalIntegrator();
     }
