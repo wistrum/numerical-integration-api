@@ -18,7 +18,7 @@ public class CorsConfig {
     @Bean
     public CorsFilter corsFilter() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(List.of(allowedOrigins.split("\\s*,\\s*")));
+        	config.setAllowedOrigins(List.of("https://rococo-biscotti-18adad.netlify.app/"));
         config.setAllowedMethods(List.of("POST", "OPTIONS"));
         config.setAllowedHeaders(List.of("Content-Type", "Authorization"));
         config.setAllowCredentials(true);
