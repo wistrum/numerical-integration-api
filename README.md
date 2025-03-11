@@ -48,7 +48,7 @@ The frontend application, built with Flutter, interfaces with the API for an eas
 To run this project locally, follow the instructions below:
 
 1. Clone the repository:  
-   `git clone git@github.com:wistrum/numerical-integration-api.git`
+   `git clone https://github.com/wistrum/numerical-integration-api.git`
 2. Navigate to the project directory:  
    `cd numerical-integration-api`
 3. Build the project using Maven:  
