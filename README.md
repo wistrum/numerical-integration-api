@@ -6,7 +6,7 @@ A Spring Boot API for comparing different numerical integration methods.
 
 <div align="center">
   <img src="https://img.shields.io/badge/Spring%20Boot-3.4.2-green" alt="Spring Boot">
-  <img src="https://img.shields.io/badge/Java-21-orange" alt="Java 11">
+  <img src="https://img.shields.io/badge/Java-11-orange" alt="Java 11">
   <img src="https://img.shields.io/badge/Jakarta%20Validation-2.0-blue" alt="Jakarta Validation">
   <img src="https://img.shields.io/badge/JUnit-5-brightgreen" alt="JUnit 5">
   <img src="https://img.shields.io/badge/JAS-Math-blue" alt="JAS">
@@ -67,4 +67,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Links
 
-- [Live Frontend](https://numerical-integration-api-production.up.railway.app)
+- [Live Frontend](https://chic-dasik-0c5065.netlify.app/)
