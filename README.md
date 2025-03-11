@@ -5,9 +5,9 @@ A Spring Boot API for comparing different numerical integration methods.
 ## Technologies Used
 
 <div align="center">
-  <img src="https://img.shields.io/badge/Spring%20Boot-3.4.2-green" alt="Spring Boot">
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.4.3-green" alt="Spring Boot">
   <img src="https://img.shields.io/badge/Java-11-orange" alt="Java 11">
-  <img src="https://img.shields.io/badge/Jakarta%20Validation-2.0-blue" alt="Jakarta Validation">
+  <img src="https://img.shields.io/badge/Jakarta%20Validation-3.0-blue" alt="Jakarta Validation">
   <img src="https://img.shields.io/badge/JUnit-5-brightgreen" alt="JUnit 5">
   <img src="https://img.shields.io/badge/JAS-Math-blue" alt="JAS">
   <img src="https://img.shields.io/badge/MXParser-Math-blue" alt="MXParser">
@@ -48,7 +48,7 @@ The frontend application, built with Flutter, interfaces with the API for an eas
 To run this project locally, follow the instructions below:
 
 1. Clone the repository:  
-   `git clone <repository_url>`
+   `git clone git@github.com:wistrum/numerical-integration-api.git`
 2. Navigate to the project directory:  
    `cd numerical-integration-api`
 3. Build the project using Maven:  
