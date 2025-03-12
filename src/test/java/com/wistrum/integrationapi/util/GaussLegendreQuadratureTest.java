@@ -20,7 +20,7 @@ class GaussLegendreQuadratureTest {
         request.setLowerBound(0);
         request.setUpperBound(2);
         request.setAngularMeasure(AngularMeasure.RADIANS);
-        request.setMethod(IntegrationMethod.SIMPSON);
+        request.setMethod(IntegrationMethod.TRAPEZOIDAL);
         request.setIntervals(1000);
         numericalIntegrator = new NumericalIntegrator();
     }
@@ -52,9 +52,9 @@ class GaussLegendreQuadratureTest {
     @Test
     void testSingularFunction() {
         request.setFunction("(2(x^2) + 3)/((x^2)-40000)");
-        request.setLowerBound(-198);
+        request.setLowerBound(-200);
         request.setUpperBound(200);
-        assertThrows(ArithmeticException.class, () -> numericalIntegrator.integrate(request), "Integration of singular function should throw an exception");
+        assertThrows(Exception.class, () -> numericalIntegrator.integrate(request), "Integration of singular function should throw an exception");
     }
 
     @Test

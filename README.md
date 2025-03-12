@@ -19,10 +19,10 @@ A Spring Boot API for comparing different numerical integration methods.
 This project is a Spring Boot API designed to compare different numerical integration methods. It includes implementations for the following methods:
 
 - **Lobatto Quadrature**
+- **Gauss Legendre Quadrature**
 - **Trapezoidal Rule**
 - **Simpson’s Rule**
-
-The API also features error analysis, optimization, and various execution environments for performance comparison.
+- **Midpoint method**
 
 ## Features
 
